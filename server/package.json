@@ -7,7 +7,7 @@
   },
   "scripts": {
     "start": "bun --watch run index.ts",
-    "production": "node dist/index.js",
+    "production": "bun  run index.ts",
     "build": "tsc -w"
   },
   "peerDependencies": {
