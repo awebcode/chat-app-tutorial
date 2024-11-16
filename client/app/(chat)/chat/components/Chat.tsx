@@ -68,7 +68,6 @@ const ChatComponent: React.FC<ChatProps> = ({ searchParams }) => {
     setMessages((prev) => [...prev, data]);
     setMessage("");
   };
-
   return (
     <div className="container flex flex-col justify-between items-center min-h-screen py-6">
       <Card className="w-full max-w-7xl p-4 shadow-lg h-full ">
@@ -77,7 +76,10 @@ const ChatComponent: React.FC<ChatProps> = ({ searchParams }) => {
             roomId={roomId}
             onlineUsers={onlineUsers}
             user={{ username, userId, avatar, socketId: "" }}
-            onLeave={() =>{ if(window.confirm("Are you sure you want to leave the room?")) router.push(`/`)}}
+            onLeave={() => {
+              if (window.confirm("Are you sure you want to leave the room?"))
+                router.push(`/`);
+            }}
           />
           {/* <CardDescription>Send and receive messages in real-time.</CardDescription> */}
         </CardHeader>
@@ -86,13 +88,13 @@ const ChatComponent: React.FC<ChatProps> = ({ searchParams }) => {
             <>
               {" "}
               <MessageList messages={messages} currentUser={username} />
-              {typingUsers?.length > 0 && typing?.userId!==userId && (
-                <TypingIndicator typingUsers={typingUsers} currentUserId={userId} />
-              )}{" "}
             </>
           ) : (
             <Empty />
           )}
+          {typingUsers?.length > 0 && typing?.userId !== userId && (
+            <TypingIndicator typingUsers={typingUsers} currentUserId={userId} />
+          )}{" "}
         </CardContent>
         <CardFooter>
           <MessageInput

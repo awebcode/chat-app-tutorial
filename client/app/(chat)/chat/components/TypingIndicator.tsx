@@ -8,7 +8,7 @@ const TypingIndicator = ({
 }: {
   typingUsers: User[];
   currentUserId: string;
-}) => {
+  }) => {
   const [additionalTypingUsers, setAdditionalTypingUsers] = useState<number>(0);
   const DISPLAY_USERS_COUNT = 5;
   useEffect(() => {
@@ -23,7 +23,7 @@ const TypingIndicator = ({
   const filteredTypingUsers = typingUsers
     .slice(0, DISPLAY_USERS_COUNT)
     .filter((user) => user.userId !== currentUserId); // Exclude current user
-
+ 
   return (
     <div className="flex items-center space-x-2">
       {/* Display avatars of typing users */}
