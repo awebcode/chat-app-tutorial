@@ -45,7 +45,7 @@ io.on("connection", (socket) => {
     onlineUsers.set(roomId, [...usersInRoom, newUser]);
 
     // Notify the room about the updated user list
-    io.in(roomId).emit("room_data", {
+    io.to(roomId).emit("room_data", {
       roomId,
       onlineUsers: onlineUsers.get(roomId) || [],
       messages: messages.get(roomId) || [],
@@ -59,7 +59,7 @@ io.on("connection", (socket) => {
     messages.set(message.roomId, [...roomMessages, newMessage]);
 
     // Broadcast the new message to the room
-    io.in(message.roomId).emit("room_data", {
+    io.to(message.roomId).emit("room_data", {
       roomId: message.roomId,
       onlineUsers: onlineUsers.get(message.roomId) || [],
       messages: messages.get(message.roomId) || [],
@@ -84,7 +84,7 @@ io.on("connection", (socket) => {
       usersTyping.add(user);
     }
 
-    socket.to(roomId).emit("typing", {
+    io.to(roomId).emit("typing", {
       roomId,
       user,
       typingUsers: Array.from(usersTyping),
@@ -103,7 +103,7 @@ io.on("connection", (socket) => {
       new Set([...usersTyping].filter((typingUser) => typingUser.userId !== userId))
     );
 
-    socket.to(roomId).emit("stop_typing", {
+    io.to(roomId).emit("stop_typing", {
       roomId,
       user,
       typingUsers: Array.from(typingUsers.get(roomId) || []),
@@ -120,7 +120,7 @@ io.on("connection", (socket) => {
       onlineUsers.set(roomId, updatedUsers);
 
       // Notify the room about the updated user list
-      io.in(roomId).emit("room_data", {
+      io.to(roomId).emit("room_data", {
         roomId,
         onlineUsers: updatedUsers,
         messages: messages.get(roomId) || [],
