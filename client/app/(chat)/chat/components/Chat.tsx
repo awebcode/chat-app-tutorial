@@ -55,7 +55,7 @@ const ChatComponent: React.FC<ChatProps> = ({ searchParams }) => {
 
   const sendMessage = () => {
     if (!message.trim() || !roomId) return;
-    socket.emit("send_message", {
+    const data = {
       id: Date.now(),
       content: message,
       sender: username,
@@ -63,7 +63,9 @@ const ChatComponent: React.FC<ChatProps> = ({ searchParams }) => {
       roomId,
       avatar,
       createdAt: new Date(),
-    });
+    };
+    socket.emit("send_message",data);
+    setMessages((prev) => [...prev, data]);
     setMessage("");
   };
 
