@@ -1,11 +1,19 @@
 import React from "react";
 import ChatComponent from "./components/Chat";
-import type { ChatProps } from "./types";
+interface ChatProps {
+  searchParams: Promise<{
+    username: string;
+    userId: string;
+    avatar: string;
+    roomId: string;
+  }>;
+}
+const ChatEndpoint = async ({ searchParams }: ChatProps) => {
+  const resolvedSearchParams = await searchParams;
 
-const ChatEndpoint = async({ searchParams }: ChatProps) => {
   return (
     <div>
-      <ChatComponent searchParams={await searchParams}  />
+      <ChatComponent searchParams={resolvedSearchParams} />
     </div>
   );
 };
