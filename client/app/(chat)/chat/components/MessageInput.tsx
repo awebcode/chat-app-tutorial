@@ -21,80 +21,72 @@ export const MessageInput = ({
 }) => {
   const timerRef = useRef<NodeJS.Timer | null>(null);
   const typingTimeoutRef = useRef<NodeJS.Timer | null>(null);
+  const { username, userId, avatar } = userInfo;
+  const typingData = {
+    roomId,
+    username,
+    userId,
+    avatar,
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-  const newMessage = e.target.value;
-  setMessage(newMessage);
+    const newMessage = e.target.value;
+    setMessage(newMessage);
 
-  // Clear any existing timeouts
-  if (timerRef.current) {
-    clearTimeout(timerRef.current);
-  }
-  if (typingTimeoutRef.current) {
-    clearTimeout(typingTimeoutRef.current);
-  }
+    // Clear any existing timeouts
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+    }
+    if (typingTimeoutRef.current) {
+      clearTimeout(typingTimeoutRef.current);
+    }
 
-  const { username, userId, avatar } = userInfo;
-  const typingData = {
-    roomId,
-    username,
-    userId,
-    avatar,
+    // Trigger the typing event immediately
+    if (newMessage.trim() !== "") {
+      socket.emit("start_typing", typingData);
+    }
+
+    const delay = 2000;
+
+    // Set a timeout to stop typing after a period of inactivity
+    typingTimeoutRef.current = setTimeout(() => {
+      socket.emit("stop_typing", typingData);
+    }, delay);
   };
 
-  // Trigger the typing event immediately
-  if (newMessage.trim() !== "") {
-    socket.emit("start_typing", typingData);
-  }
-
-  const delay = 2000;
-
-  // Set a timeout to stop typing after a period of inactivity
-  typingTimeoutRef.current = setTimeout(() => {
+  const handleSend = () => {
+    // Emit stop typing immediately when sending the message
+    if (typingTimeoutRef.current) {
+      clearTimeout(typingTimeoutRef.current);
+    }
     socket.emit("stop_typing", typingData);
-  }, delay);
-};
 
-const handleSend = () => {
-  const { username, userId, avatar } = userInfo;
-  const typingData = {
-    roomId,
-    username,
-    userId,
-    avatar,
+    onSend(); // Call the onSend prop to handle the message sending logic
   };
 
-  // Emit stop typing immediately when sending the message
-  if (typingTimeoutRef.current) {
-    clearTimeout(typingTimeoutRef.current);
-  }
-  socket.emit("stop_typing", typingData);
-
-  onSend(); // Call the onSend prop to handle the message sending logic
-};
-
-return (
-  <form
-    onSubmit={(e) => {
-      e.preventDefault();
-      handleSend();
-    }}
-    className="flex items-end gap-2 w-full"
-  >
-    <Textarea
-      placeholder="Type a message..."
-      value={message}
-      onChange={handleChange}
-      onKeyDown={(e) => {
-        if (e.key === "Enter") {
-          e.preventDefault();
-          handleSend();
-        }
+  return (
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        handleSend();
       }}
-      className="resize-none"
-    />
-    <Button onClick={handleSend} className="">
-      Send 🚀
-    </Button>
-  </form>
-)
+      className="flex items-end gap-2 w-full"
+    >
+      <Textarea
+        placeholder="Type a message..."
+        value={message}
+        onChange={handleChange}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            e.preventDefault();
+            handleSend();
+          }
+        }}
+        className="resize-none"
+      />
+      <Button onClick={handleSend} className="">
+        Send 🚀
+      </Button>
+    </form>
+  );
 };
