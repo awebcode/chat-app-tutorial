@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import useSocket from "@/app/hooks/useSocket";
+import useSocket from "@/hooks/use-socket";
 import { ChatHeader } from "./ChatHeader";
 const Empty = dynamic(() => import("./Empty"), { ssr: false,loading: () => <MessageListSkeleton/> });
 const MessageList=dynamic(() => import("./MessageList").then((mod) => mod.MessageList), { ssr: false,loading: () => <MessageListSkeleton/> });
@@ -19,7 +19,7 @@ const ChatComponent: React.FC<ChatProps> = ({ searchParams }) => {
   const [message, setMessage] = useState("");
   const [typing, setTyping] = useState<User | null>(null);
   const [typingUsers, setTypingUsers] = useState<User[]>([]);
-  const socket = useSocket("http://localhost:4000"); // Replace with your server URL
+  const socket = useSocket(process.env.NEXT_PUBLIC_SERVER_URL!); // Replace with your server URL
   const { roomId, username, userId, avatar } = searchParams;
   useEffect(() => {
     socket.on("receive_message", (msg: Message) => {
@@ -79,7 +79,7 @@ const ChatComponent: React.FC<ChatProps> = ({ searchParams }) => {
           />
           {/* <CardDescription>Send and receive messages in real-time.</CardDescription> */}
         </CardHeader>
-        <CardContent>
+        <CardContent className="flex flex-col min-h-[60vh]">
           {messages.length > 0 ? (
             <>
               {" "}

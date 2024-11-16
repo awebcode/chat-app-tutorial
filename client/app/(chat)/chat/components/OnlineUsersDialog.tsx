@@ -12,10 +12,10 @@ export const OnlineUsersDialog = ({
 }) => (
   <Dialog open onOpenChange={onClose}>
     <DialogTitle>
-      <h2 className="text-lg font-semibold">Online Users ({users.length})</h2>
+     Online Users ({users.length})
     </DialogTitle>
     <DialogContent>
-      <ul className="mt-4 flex flex-col  gap-2">
+      <ul className="mt-4 flex flex-col  gap-2 py-4">
         {users.map((user) => (
           <li
             key={user.userId}

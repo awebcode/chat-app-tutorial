@@ -20,7 +20,7 @@ export const ChatHeader = ({
   const [showUserInfo, setShowUserInfo] = useState(false);
 
   return (
-    <div className="container flex justify-between items-center w-full">
+    <div className="container flex  justify-between items-center w-full">
       <Button onClick={onLeave} variant="outline">
         <ArrowLeft className="mr-2 h-4 w-4" /> Leave
       </Button>

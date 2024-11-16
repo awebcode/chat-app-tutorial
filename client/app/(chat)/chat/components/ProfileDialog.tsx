@@ -15,7 +15,7 @@ export const ProfileDialog = ({ user, onClose }: { user: User; onClose: () => vo
     <DialogContent>
       <DialogHeader>
         <DialogTitle>
-          <h2 className="text-lg font-semibold">Profile - {user.username}</h2>
+         Profile - {user.username}
           <p className="text-sm">#{user.userId}</p>
         </DialogTitle>
       </DialogHeader>
