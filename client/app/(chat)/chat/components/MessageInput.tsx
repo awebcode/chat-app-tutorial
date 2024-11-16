@@ -19,8 +19,8 @@ export const MessageInput = ({
   roomId: string;
   userInfo: User;
 }) => {
-  const timerRef = useRef<NodeJS.Timer | null>(null);
-  const typingTimeoutRef = useRef<NodeJS.Timer | null>(null);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const { username, userId, avatar } = userInfo;
   const typingData = {
     roomId,
