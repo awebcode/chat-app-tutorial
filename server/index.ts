@@ -131,6 +131,9 @@ io.on("connection", (socket) => {
 
 // Start the server
 const PORT = 4000;
+app.get("/", (req, res) => {
+  res.json({ message: "BOOM! Server is running...🚀" });
+});
 server.listen(PORT, () => {
   console.log(`🚀 Server running at http://localhost:${PORT}`);
 });
